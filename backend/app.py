@@ -10,7 +10,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["https://gesture-puzzle-frontend.onrender.com"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -54,11 +54,11 @@ async def upload_image(
     pieces = generate_puzzle(filepath, grid, unique_id)
 
     piece_urls = [
-        f"http://127.0.0.1:8000/generated/{piece}"
+        f"https://gesture-puzzle-backend.onrender.com/generated/{piece}"
         for piece in pieces
     ]
 
-    original_url = f"http://127.0.0.1:8000/uploads/{new_filename}"
+    original_url = f"https://gesture-puzzle-backend.onrender.com/uploads/{new_filename}"
 
     return {
         "success": True,
