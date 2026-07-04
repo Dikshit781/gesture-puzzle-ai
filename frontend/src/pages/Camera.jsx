@@ -97,7 +97,7 @@ export default function Camera() {
       formData.append("file", blob, uniqueFileName);
       formData.append("grid", difficulty.grid);
 
-      const response = await fetch("http://127.0.0.1:8000/upload", {
+      const response = await fetch("https://gesture-puzzle-backend.onrender.com/upload", {
         method: "POST",
         body: formData,
       });
