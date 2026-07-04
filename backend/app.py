@@ -10,7 +10,8 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://gesture-puzzle-frontend.onrender.com"],
+    allow_origins=["http://localhost:5173",
+        "https://gesture-puzzle-ai-49i3-five.vercel.app"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
