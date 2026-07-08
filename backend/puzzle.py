@@ -1,6 +1,5 @@
 import cv2
 import os
-import numpy as np
 
 OUTPUT_FOLDER = "generated"
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
@@ -13,31 +12,27 @@ def generate_puzzle(image_path, grid=3, unique_id="puzzle"):
         raise Exception("Image not found")
 
     grid = int(grid)
-
     if grid not in [3, 4, 5]:
         grid = 3
 
     output_size = 600
-
     h, w = image.shape[:2]
 
-    # Resize image while keeping full image visible
-    scale = output_size / max(w, h)
+    # Resize like object-fit: cover
+    scale = output_size / min(w, h)
     new_w = int(w * scale)
     new_h = int(h * scale)
 
     resized = cv2.resize(image, (new_w, new_h))
 
-    # Create square canvas
-    canvas = np.ones((output_size, output_size, 3), dtype=np.uint8) * 255
+    # Center crop to 600x600
+    start_x = (new_w - output_size) // 2
+    start_y = (new_h - output_size) // 2
 
-    x_offset = (output_size - new_w) // 2
-    y_offset = (output_size - new_h) // 2
-
-    canvas[
-        y_offset:y_offset + new_h,
-        x_offset:x_offset + new_w
-    ] = resized
+    square_image = resized[
+        start_y:start_y + output_size,
+        start_x:start_x + output_size
+    ]
 
     piece_size = output_size // grid
     pieces = []
@@ -49,10 +44,9 @@ def generate_puzzle(image_path, grid=3, unique_id="puzzle"):
             y = row * piece_size
             x = col * piece_size
 
-            piece = canvas[y:y + piece_size, x:x + piece_size]
+            piece = square_image[y:y + piece_size, x:x + piece_size]
 
             filename = f"{unique_id}_piece_{count}.jpg"
-
             cv2.imwrite(os.path.join(OUTPUT_FOLDER, filename), piece)
 
             pieces.append(filename)
