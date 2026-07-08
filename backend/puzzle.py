@@ -59,4 +59,3 @@ def generate_puzzle(image_path, grid=3, unique_id="puzzle"):
             count += 1
 
     return pieces
-
